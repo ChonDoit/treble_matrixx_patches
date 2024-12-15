@@ -1,0 +1,14 @@
+##### 20241214 #####
+
+| December Matrixx Sync -Matrixx Changelog-
+
+##### 202412007 #####
+
+| Fix bootloop due duplicated sepolicy
+
+##### 20241205 #####
+
+| Without FOD
+| Play Integrity BASIC out of the box (use their PIF thing if you need)
+
+ADVICE: Don't use Two-Pane layout from TrebleApp

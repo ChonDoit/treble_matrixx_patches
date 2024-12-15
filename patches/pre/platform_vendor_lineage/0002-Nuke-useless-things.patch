@@ -1,0 +1,70 @@
+From 6b9e4ba605fb27945218575143e7e22148fedbe7 Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Tue, 3 Dec 2024 00:21:11 -0300
+Subject: [PATCH] Nuke adb props, addon.d and private keys calls
+
+---
+ config/common.mk | 39 ---------------------------------------
+ 1 file changed, 39 deletions(-)
+
+diff --git a/config/common.mk b/config/common.mk
+index c6c6c837..f0b6a0df 100644
+--- a/config/common.mk
++++ b/config/common.mk
+@@ -26,45 +26,8 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+ endif
+ endif
+ 
+-ifeq ($(TARGET_BUILD_VARIANT),eng)
+-# Disable ADB authentication
+-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += ro.adb.secure=0
+-else
+-ifdef WITH_ADB_INSECURE
+-# Forcebly disable ADB authentication
+-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += ro.adb.secure=0
+-else
+-# Enable ADB authentication
+-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += ro.adb.secure=1
+-endif
+-
+-# Disable extra StrictMode features on all non-engineering builds
+-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += persist.sys.strictmode.disable=true
+-endif
+-
+-# Backup Tool
+-PRODUCT_COPY_FILES += \
+-    vendor/lineage/prebuilt/common/bin/backuptool.sh:install/bin/backuptool.sh \
+-    vendor/lineage/prebuilt/common/bin/backuptool.functions:install/bin/backuptool.functions \
+-    vendor/lineage/prebuilt/common/bin/50-lineage.sh:$(TARGET_COPY_OUT_SYSTEM)/addon.d/50-lineage.sh
+-
+-PRODUCT_ARTIFACT_PATH_REQUIREMENT_ALLOWED_LIST += \
+-    system/addon.d/50-lineage.sh
+-
+-ifneq ($(strip $(AB_OTA_PARTITIONS) $(AB_OTA_POSTINSTALL_CONFIG)),)
+-PRODUCT_COPY_FILES += \
+-    vendor/lineage/prebuilt/common/bin/backuptool_ab.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/backuptool_ab.sh \
+-    vendor/lineage/prebuilt/common/bin/backuptool_ab.functions:$(TARGET_COPY_OUT_SYSTEM)/bin/backuptool_ab.functions \
+-    vendor/lineage/prebuilt/common/bin/backuptool_postinstall.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/backuptool_postinstall.sh
+-
+-PRODUCT_ARTIFACT_PATH_REQUIREMENT_ALLOWED_LIST += \
+-    system/bin/backuptool_ab.sh \
+-    system/bin/backuptool_ab.functions \
+-    system/bin/backuptool_postinstall.sh
+-
+ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+     ro.ota.allow_downgrade=true
+-endif
+ 
+ # Lineage-specific broadcast actions whitelist
+ PRODUCT_COPY_FILES += \
+@@ -266,7 +229,5 @@ PRODUCT_EXTRA_RECOVERY_KEYS += \
+ include vendor/lineage/config/props.mk
+ include vendor/lineage/config/version.mk
+ 
+--include vendor/lineage-priv/keys/keys.mk
+-
+ -include $(WORKSPACE)/build_env/image-auto-bits.mk
+ -include vendor/lineage/config/partner_gms.mk
+-- 
+2.47.1
+

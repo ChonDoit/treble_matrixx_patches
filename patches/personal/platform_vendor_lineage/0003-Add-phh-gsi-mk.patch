@@ -1,0 +1,46 @@
+From 63ca33d45f979ff814ba00e066d58e10e787d122 Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Sat, 11 Nov 2023 17:03:04 +0000
+Subject: [PATCH 3/3] Add phh_gsi.mk
+
+---
+ config/phh_gsi.mk  | 15 +++++++++++++++
+ config/system.prop |  4 ++++
+ 2 files changed, 19 insertions(+)
+ create mode 100644 config/phh_gsi.mk
+ create mode 100644 config/system.prop
+
+diff --git a/config/phh_gsi.mk b/config/phh_gsi.mk
+new file mode 100644
+index 00000000..0b679f61
+--- /dev/null
++++ b/config/phh_gsi.mk
+@@ -0,0 +1,15 @@
++# Call for Secure build
++$(call inherit-product, device/phh/treble/secure.mk)
++PHH-SECURE_BUILD ?= false
++
++# Don't Build Kernel
++TARGET_NO_KERNEL_OVERRIDE := true
++
++# Use CCache
++USE_CCACHE := true
++
++# Private Keys
++$(call inherit-product-if-exists, vendor/keys/keys.mk)
++
++# Custom Props
++TARGET_SYSTEM_PROP := vendor/lineage/config/system.prop $(TARGET_SYSTEM_PROP)
+diff --git a/config/system.prop b/config/system.prop
+new file mode 100644
+index 00000000..1b1855ef
+--- /dev/null
++++ b/config/system.prop
+@@ -0,0 +1,4 @@
++persist.sys.binary_xml=false
++dalvik.vm.dex2oat64.enabled=true
++ro.system.ota.json_url=https://raw.githubusercontent.com/ChonDoit/treble_matrixx_patches/14/ota.json
++persist.sys.phh.two_pane_layout=false
+-- 
+2.47.1
+

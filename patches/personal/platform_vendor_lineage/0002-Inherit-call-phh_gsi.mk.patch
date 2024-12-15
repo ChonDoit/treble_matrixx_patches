@@ -1,0 +1,32 @@
+From d5efd26a1416ae748944df205a229c28d453485b Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Sat, 11 Nov 2023 16:58:32 +0000
+Subject: [PATCH 2/3] Inherit call phh_gsi.mk
+
+---
+ config/common.mk | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/config/common.mk b/config/common.mk
+index c6c6c837..9d3d8e00 100644
+--- a/config/common.mk
++++ b/config/common.mk
+@@ -4,6 +4,15 @@ $(call inherit-product-if-exists, vendor/lineage/config/matrixx.mk)
+ $(call inherit-product-if-exists, vendor/addons/config.mk)
+ $(call inherit-product-if-exists, vendor/pixel-framework/config.mk)
+ 
++# PHH GSI
++$(call inherit-product, vendor/lineage/config/phh_gsi.mk)
++$(call inherit-product, device/lineage/sepolicy/common/sepolicy.mk)
++
++# Set Bootanimation at 1080P
++TARGET_BOOT_ANIMATION_RES := 1080
++
++MATRIXX_MAINTAINER := ChonDoe
++
+ PRODUCT_BRAND ?= ProjectMatrixx
+ 
+ PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
+-- 
+2.47.1
+

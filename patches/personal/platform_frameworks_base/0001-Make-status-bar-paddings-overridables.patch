@@ -1,0 +1,86 @@
+From 85bef0ccb00a91dd0f1c36180c1bf8eb136c5521 Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Thu, 10 Aug 2023 00:24:43 +0000
+Subject: [PATCH 01/29] Make status bar paddings overridables
+
+with
+persist.sys.phh.status_bar_padding_top
+persist.sys.phh.status_bar_padding_start
+persist.sys.phh.status_bar_padding_end
+---
+ .../phone/KeyguardStatusBarView.java          |  7 ++++--
+ .../statusbar/phone/PhoneStatusBarView.java   | 24 +++++++++++++------
+ 2 files changed, 22 insertions(+), 9 deletions(-)
+
+diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java b/packages/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java
+index 7ed962120..a0bf53d1c 100644
+--- a/packages/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java
++++ b/packages/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java
+@@ -28,6 +28,7 @@ import android.graphics.Color;
+ import android.graphics.Insets;
+ import android.graphics.Rect;
+ import android.graphics.drawable.Drawable;
++import android.os.SystemProperties;
+ import android.os.Trace;
+ import android.os.UserHandle;
+ import android.provider.Settings;
+@@ -219,7 +220,9 @@ public class KeyguardStatusBarView extends RelativeLayout {
+                 UserHandle.USER_CURRENT));
+         mSystemIconsSwitcherHiddenExpandedMargin = res.getDimensionPixelSize(
+                 R.dimen.system_icons_switcher_hidden_expanded_margin);
+-        mStatusBarPaddingEnd = res.getDimensionPixelSize(
++        mStatusBarPaddingEnd = SystemProperties.getInt("persist.sys.phh.status_bar_padding_end", -1);
++	if(mStatusBarPaddingEnd == -1)
++            mStatusBarPaddingEnd = res.getDimensionPixelSize(
+                 R.dimen.status_bar_padding_end);
+         mMinDotWidth = res.getDimensionPixelSize(
+                 R.dimen.ongoing_appops_dot_min_padding);
+diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java b/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+index 3bf1ee096..9d25efbc6 100644
+--- a/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
++++ b/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarView.java
+@@ -28,6 +28,7 @@ import android.graphics.Rect;
+ import android.inputmethodservice.InputMethodService;
+ import android.os.IBinder;
+ import android.os.RemoteException;
++import android.os.SystemProperties;
+ import android.provider.Settings;
+ import android.util.AttributeSet;
+ import android.util.Log;
+@@ -403,17 +404,26 @@ public class PhoneStatusBarView extends FrameLayout implements Callbacks, TunerS
+     }
+ 
+     private void updatePaddings() {
+-        int statusBarPaddingStart = getResources().getDimensionPixelSize(
+-                R.dimen.status_bar_padding_start);
+-
++	int statusBarPaddingTop = SystemProperties.getInt("persist.sys.phh.status_bar_padding_top", -1);
++        if(statusBarPaddingTop == -1)
++        statusBarPaddingTop = getResources().getDimensionPixelSize(R.dimen.status_bar_padding_top);
++
++        int statusBarPaddingStart = SystemProperties.getInt("persist.sys.phh.status_bar_padding_start", -1);
++        if(statusBarPaddingStart == -1)
++        statusBarPaddingStart = getResources().getDimensionPixelSize(R.dimen.status_bar_padding_start);
++
++        int statusBarPaddingEnd = SystemProperties.getInt("persist.sys.phh.status_bar_padding_end", -1);
++        if(statusBarPaddingEnd == -1)
++        statusBarPaddingEnd = getResources().getDimensionPixelSize(R.dimen.status_bar_padding_end);
++ 
+         mStatusBarContents.setPaddingRelative(
+-                statusBarPaddingStart + mStatusBarPaddingStart,
+-                getResources().getDimensionPixelSize(R.dimen.status_bar_padding_top) + mStatusBarPaddingTop,
+-                getResources().getDimensionPixelSize(R.dimen.status_bar_padding_end) + mStatusBarPaddingEnd,
++                (int) statusBarPaddingStart + mStatusBarPaddingStart,
++                (int) statusBarPaddingTop + mStatusBarPaddingTop,
++                (int) statusBarPaddingEnd + mStatusBarPaddingEnd,
+                 0);
+ 
+         findViewById(R.id.notification_lights_out)
+-                .setPaddingRelative(0, statusBarPaddingStart + mStatusBarPaddingStart, 0, 0);
++                .setPaddingRelative(0, (int) statusBarPaddingStart + mStatusBarPaddingStart, 0, 0);
+ 
+         findViewById(R.id.system_icons).setPaddingRelative(
+                 getResources().getDimensionPixelSize(R.dimen.status_bar_icons_padding_start),
+-- 
+2.25.1
+

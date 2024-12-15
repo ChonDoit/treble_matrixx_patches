@@ -1,0 +1,63 @@
+From 60fd12135b6c957d6265b8ac76981ca5cb8e15f5 Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Sat, 12 Aug 2023 18:52:10 +0000
+Subject: [PATCH] Nuke adb and APN from everywhere
+
+---
+ core/main.mk                          | 8 --------
+ target/product/aosp_product.mk        | 6 ------
+ target/product/full_base_telephony.mk | 5 -----
+ 3 files changed, 19 deletions(-)
+
+diff --git a/core/main.mk b/core/main.mk
+index 8e1a268..c0411bc 100644
+--- a/core/main.mk
++++ b/core/main.mk
+@@ -391,14 +391,6 @@ user_variant := $(filter user userdebug,$(TARGET_BUILD_VARIANT))
+ enable_target_debugging := true
+ tags_to_install :=
+ ifneq (,$(user_variant))
+-  # Target is secure in user builds.
+-  ADDITIONAL_SYSTEM_PROPERTIES += ro.secure=1
+-  ADDITIONAL_SYSTEM_PROPERTIES += security.perf_harden=1
+-
+-  ifeq ($(user_variant),user)
+-    ADDITIONAL_SYSTEM_PROPERTIES += ro.adb.secure=1
+-  endif
+-
+   ifeq ($(user_variant),userdebug)
+     # Pick up some extra useful tools
+     tags_to_install += debug
+diff --git a/target/product/aosp_product.mk b/target/product/aosp_product.mk
+index 67ab7a7..ab55ffc 100644
+--- a/target/product/aosp_product.mk
++++ b/target/product/aosp_product.mk
+@@ -37,9 +37,3 @@ PRODUCT_PACKAGES += \
+     preinstalled-packages-platform-aosp-product.xml \
+     ThemePicker \
+
+-# Telephony:
+-#   Provide a APN configuration to GSI product
+-ifeq ($(LINEAGE_BUILD),)
+-PRODUCT_COPY_FILES += \
+-    device/sample/etc/apns-full-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml
+-endif
+diff --git a/target/product/full_base_telephony.mk b/target/product/full_base_telephony.mk
+index e4f5a16..5470ad2 100644
+--- a/target/product/full_base_telephony.mk
++++ b/target/product/full_base_telephony.mk
+@@ -26,10 +26,5 @@ PRODUCT_VENDOR_PROPERTIES := \
+ PRODUCT_COPY_FILES := \
+     frameworks/native/data/etc/handheld_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/handheld_core_hardware.xml
+
+-ifeq ($(LINEAGE_BUILD),)
+-PRODUCT_COPY_FILES += \
+-    device/sample/etc/apns-full-conf.xml:system/etc/apns-conf.xml
+-endif
+-
+ $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
+ $(call inherit-product, $(SRC_TARGET_DIR)/product/telephony.mk)
+-- 
+2.25.1
+
+

@@ -1,0 +1,23 @@
+{
+  "version": "20241214",
+  "date": "1734215152",
+  "gsi": "Project Matrixx | by ChonDoe feat. TD",
+  "changelog": "https://raw.githubusercontent.com/ChonDoit/treble_matrixx_patches/14/changelog.txt",
+  "variants": [
+    {
+      "name": "Gapps",
+      "size": "1608515928",
+      "url": "https://github.com/ChonDoit/treble_matrixx_patches/releases/download/A14/ProjectMatrixx_A14-arm64-bgS_20241214.img.xz"
+    },
+    {
+      "name": "Slim",
+      "size": "1369713636",
+      "url": "https://github.com/ChonDoit/treble_matrixx_patches/releases/download/A14/ProjectMatrixx_A14-arm64-bgS-slim_20241214.img.xz"
+    },
+    {
+      "name": "Vanilla",
+      "size": "1023297712",
+      "url": "https://github.com/ChonDoit/treble_matrixx_patches/releases/download/A14/ProjectMatrixx_A14-arm64-bvS_20241214.img.xz"
+    }
+  ]
+}

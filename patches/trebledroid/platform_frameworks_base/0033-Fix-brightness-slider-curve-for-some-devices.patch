@@ -1,0 +1,30 @@
+From 37a8a6b518fac7e3a3925dc9ac1e1e23092df778 Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Thu, 24 Aug 2023 15:58:15 -0300
+Subject: [PATCH 33/45] Fix brightness slider curve for some devices
+
+Some devices report max brightness as 2047 or 4095
+---
+ .../src/com/android/settingslib/display/BrightnessUtils.java  | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/packages/SettingsLib/DisplayUtils/src/com/android/settingslib/display/BrightnessUtils.java b/packages/SettingsLib/DisplayUtils/src/com/android/settingslib/display/BrightnessUtils.java
+index 68bb378b8..ac6fc1c49 100644
+--- a/packages/SettingsLib/DisplayUtils/src/com/android/settingslib/display/BrightnessUtils.java
++++ b/packages/SettingsLib/DisplayUtils/src/com/android/settingslib/display/BrightnessUtils.java
+@@ -24,10 +24,10 @@ import com.android.internal.display.BrightnessSynchronizer;
+ public class BrightnessUtils {
+ 
+     public static final boolean sysUseLowGamma = Boolean.parseBoolean(
+-        SystemProperties.get("persist.sys.brightness.low.gamma", "false"));
++        SystemProperties.get("persist.sys.phh.low_gamma_brightness", "false"));
+ 
+     public static final int GAMMA_SPACE_MIN = 0;
+-    public static final int GAMMA_SPACE_MAX = sysUseLowGamma ? 255 : 65535;
++    public static final int GAMMA_SPACE_MAX = sysUseLowGamma ? 255 : 65536;
+ 
+     // Hybrid Log Gamma constant values
+     private static final float R = 0.5f;
+-- 
+2.25.1
+
