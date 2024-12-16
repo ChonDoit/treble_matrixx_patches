@@ -1,3 +1,7 @@
+##### 20241216 #####
+
+| Nuked PIF and pushed own spoof for Play Integrity
+
 ##### 20241214 #####
 
 | December Matrixx Sync -Matrixx Changelog-
